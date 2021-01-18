@@ -1,24 +1,20 @@
-# README
+# 万葉課題
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+**テーブルスキーマ（モデル名、カラム名、データ型）を記入**
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+1. Task model
+  * title : text
+  * content : text
+  * expiration_date : datetime
+  * priority : integer
+  * status : string
+  * user : references
+<br>
+2. User model
+  * name : string
+  * email : text
+  * password_digest : text
+<br>
+3. Label model
+  * type : string
+  * task : references
