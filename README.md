@@ -3,8 +3,8 @@
 **テーブルスキーマ（モデル名、カラム名、データ型）を記入**
 
 1. Task model
-  * title : text
-  * content : text
+  * name : string
+  * description : text
   * expiration_date : datetime
   * priority : integer
   * status : string
