@@ -12,7 +12,7 @@ describe 'タスクモデル機能', type: :model do
       it 'バリデーションにひっかかる' do
         task = Task.new(name: '失敗テスト２',description: '')
         task.valid?
-        expect(task.errors[:description]).to include("can't be blank")
+        expect(task.errors[:description].to_s).to include("入力してください")
       end
     end
     context 'タスクのタイトルと詳細に内容が記載されている場合' do
