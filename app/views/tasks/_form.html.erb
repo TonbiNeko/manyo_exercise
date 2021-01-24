@@ -18,6 +18,11 @@
     <%= form.text_field :description %>
   </div>
 
+  <div>
+    <%= form.label :終了期限 %>
+    <%= form.date_select :expiration_date %>
+  </div>
+
   <%= form.submit "登録" %>
 <% end %>
 
