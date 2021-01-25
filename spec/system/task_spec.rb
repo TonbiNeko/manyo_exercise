@@ -17,6 +17,7 @@ RSpec.describe 'タスク管理機能', type: :system do
   describe '一覧表示機能' do
     let!(:task) { FactoryBot.create(:task) }
     let!(:second_task) { FactoryBot.create(:second_task) }
+    let!(:third_task) {FactoryBot.create(:third_task) }
     before do
       visit tasks_path
     end
@@ -42,6 +43,14 @@ RSpec.describe 'タスク管理機能', type: :system do
         expect(actual_task_names).to eq expected_task_names
 
         # expect(first_task_name).to include 'Factoryで作ったデフォルトのname2'
+      end
+    end
+    context 'タスクが終了期限でソートする場合' do
+      it '終了期限の降順に並ぶ' do
+        click_on "終了期限でソートする"
+        actual_task_names = all('.task_name').map(&:text)
+        expected_task_names = Task.all.order(expiration_date: :desc).pluck(:name)
+        expect(actual_task_names).to eq expected_task_names
       end
     end
   end
