@@ -1,7 +1,14 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   def index
-    if params[:sort_expired]
+    @tasks = Task.all
+    if params[:name].present? && params[:status].present?
+      @tasks =  @tasks.where('name LIKE ?', "%#{params[:name]}%").where(status: params[:status])
+    elsif params[:name].present?
+      @tasks = @tasks.where('name LIKE ?', "%#{params[:name]}%")
+    elsif params[:status].present?
+      @tasks = @tasks.where(status: params[:status])
+    elsif params[:sort_expired]
       @tasks = Task.all.order(expiration_date: :desc)
     else
       @tasks = Task.all.order(created_at: :desc)
@@ -18,7 +25,6 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
-      binding.pry
       redirect_to @task, notice: "タスクを登録しました"
     else
       render :new
