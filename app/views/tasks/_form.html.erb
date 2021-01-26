@@ -23,6 +23,11 @@
     <%= form.date_select :expiration_date %>
   </div>
 
+  <div>
+    <%= form.label :ステータス %>
+    <%= form.select :status,["未着手", "着手中", "完了"], prompt: "ステータスを選択してください" %>
+    </div>
+
   <%= form.submit "登録" %>
 <% end %>
 

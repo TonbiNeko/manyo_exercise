@@ -18,6 +18,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
+      binding.pry
       redirect_to @task, notice: "タスクを登録しました"
     else
       render :new
@@ -46,6 +47,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:name, :description, :expiration_date)
+    params.require(:task).permit(:name, :description, :expiration_date, :status)
   end
 end
