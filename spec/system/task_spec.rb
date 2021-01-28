@@ -8,6 +8,8 @@ RSpec.describe 'タスク管理機能', type: :system do
       visit new_task_path
       fill_in "task[name]", with: 'タスク１'
       fill_in "task[description]", with: '内容１'
+      fill_in "task[expiration_date]", with: '2021-01-01'
+      select "完了", from: "task[status]"
       click_button '登録'
       expect(page).to have_content 'タスク１'
       end
@@ -64,5 +66,37 @@ RSpec.describe 'タスク管理機能', type: :system do
         expect(page).to have_content 'Factoryで作ったデフォルトのdescriotion2'
        end
      end
+  end
+
+  describe '検索機能' do
+    let!(:task) { FactoryBot.create(:task, name: "task", status: "完了") }
+    let!(:second_task) { FactoryBot.create(:second_task, name: "sample", status: "完了") }
+    let!(:third_task) { FactoryBot.create(:third_task, name: "sample2", status: "完了") }
+    before do
+      visit tasks_path
+    end
+    context 'タイトルであいまい検索をした場合' do
+      it "検索キーワードを含むタスクで絞り込まれる" do
+        fill_in "name", with: "task"
+        click_on "検索", match: :first
+        expect(page).to have_content 'task'
+      end
+    end
+    context 'ステータス検索をした場合' do
+      it "ステータスに完全一致するタスクが絞り込まれる" do
+        select "完了", from: "status"
+        find('#search_status').click
+        expect(page).to have_content "task" && "完了"
+      end
+    end
+    context 'タイトルのあいまい検索とステータス検索をした場合' do
+      it "検索キーワードをタイトルに含み、かつステータスに完全一致するタスク絞り込まれる" do
+        # ここに実装する
+        fill_in "name", with: "sample"
+        select "完了", from: "status"
+        find('#search_status').click
+        expect(page).to have_content "sample" && "sample2" && "完了"
+      end
+    end
   end
 end

@@ -13,18 +13,6 @@ class TasksController < ApplicationController
       else
         @tasks = Task.all.order_create_at_desc
     end
-    # @tasks = Task.all
-    # if params[:name].present? && params[:status].present?
-    #   @tasks =  @tasks.where('name LIKE ?', "%#{params[:name]}%").where(status: params[:status])
-    # elsif params[:name].present?
-    #   @tasks = @tasks.where('name LIKE ?', "%#{params[:name]}%")
-    # elsif params[:status].present?
-    #   @tasks = @tasks.where(status: params[:status])
-    # elsif params[:sort_expired]
-    #   @tasks = Task.all.order(expiration_date: :desc)
-    # else
-    #   @tasks = Task.all.order(created_at: :desc)
-    # end
   end
 
   def show
