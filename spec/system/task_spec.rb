@@ -49,9 +49,21 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
     context 'タスクが終了期限でソートする場合' do
       it '終了期限の降順に並ぶ' do
-        click_on "終了期限でソートする"
+        click_on "終了期限でソート"
         actual_task_names = all('.task_name').map(&:text)
         expected_task_names = Task.all.order(expiration_date: :desc).pluck(:name)
+        expect(actual_task_names).to eq expected_task_names
+      end
+    end
+
+    context 'タスクが優先順位でソートする場合' do
+      it '優先順位（未着手、着手中、完了それぞれ終了期限の昇降順）に並ぶ' do
+        click_on "優先順位でソート"
+        actual_task_names = all('.task_name').map(&:text)
+        tasks_one = Task.all.one.map(&:name)
+        tasks_two = Task.all.two.map(&:name)
+        tasks_three = Task.all.three.map(&:name)
+        expected_task_names = tasks_one + tasks_two + tasks_three
         expect(actual_task_names).to eq expected_task_names
       end
     end
@@ -91,7 +103,6 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
     context 'タイトルのあいまい検索とステータス検索をした場合' do
       it "検索キーワードをタイトルに含み、かつステータスに完全一致するタスク絞り込まれる" do
-        # ここに実装する
         fill_in "name", with: "sample"
         select "完了", from: "status"
         find('#search_status').click
