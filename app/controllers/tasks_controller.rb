@@ -10,6 +10,8 @@ class TasksController < ApplicationController
       @tasks = @tasks.search_with_status(params[:status])
       elsif params[:sort_expired]
         @tasks = Task.all.order_expiration_date_desc
+      elsif params[:sort_priority]
+        @tasks = Task.all.order(expiration_date: :asc)
       else
         @tasks = Task.all.order_create_at_desc
     end

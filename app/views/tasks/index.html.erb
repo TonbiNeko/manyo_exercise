@@ -1,11 +1,12 @@
 <%= notice %>
 <h1>タスク一覧</h1>
-<%= link_to "終了期限でソートする", tasks_path(sort_expired: "true") %>
+<%= link_to "終了期限でソート", tasks_path(sort_expired: "true") %>
+<%= link_to "優先順位でソート", tasks_path(sort_priority: "true") %>
 
 <%= form_with url: tasks_path, method: :get, local: true do |form| %>
   <%= form.text_field :name, placeholder:"タイトルで検索" %>
   <%= form.submit '検索' %>
-  <%= form.select :status,["未着手", "着手中", "完了"], prompt: "ステータスで検索" %>
+  <%= form.select :status,options_for_select_from_enum(Task, :status), prompt: "ステータスで検索" %>
   <%= form.submit '検索', id: "search_status" %>
 <% end %>
 
