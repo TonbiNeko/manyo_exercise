@@ -59,11 +59,9 @@ RSpec.describe 'タスク管理機能', type: :system do
     context 'タスクが優先順位でソートする場合' do
       it '優先順位（未着手、着手中、完了それぞれ終了期限の昇降順）に並ぶ' do
         click_on "優先順位でソート"
+        sleep(2)
         actual_task_names = all('.task_name').map(&:text)
-        tasks_one = Task.all.one.map(&:name)
-        tasks_two = Task.all.two.map(&:name)
-        tasks_three = Task.all.three.map(&:name)
-        expected_task_names = tasks_one + tasks_two + tasks_three
+        expected_task_names = Task.all.prioritized.map(&:name)
         expect(actual_task_names).to eq expected_task_names
       end
     end

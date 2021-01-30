@@ -1,22 +1,20 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+
   def index
     @tasks = Task.all
     if params[:name].present? && params[:status].present?
-      @tasks = @tasks.search_with_name(params[:name]).search_with_status(params[:status])
+      @tasks = @tasks.search_with_name(params[:name]).search_with_status(params[:status]).page(params[:page]).per(10)
     elsif params[:name].present?
-      @tasks = @tasks.search_with_name (params[:name])
+      @tasks = @tasks.search_with_name(params[:name]).page(params[:page]).per(10)
     elsif params[:status].present?
-      @tasks = @tasks.search_with_status(params[:status])
-      elsif params[:sort_expired]
-        @tasks = Task.all.order_expiration_date_desc
-      elsif params[:sort_priority]
-        tasks_one = Task.all.one
-        tasks_two = Task.all.two
-        tasks_three = Task.all.three
-        @tasks = tasks_one + tasks_two + tasks_three
-      else
-        @tasks = Task.all.order_create_at_desc
+      @tasks = @tasks.search_with_status(params[:status]).page(params[:page]).per(10)
+    elsif params[:sort_expired]
+      @tasks = Task.all.order_expiration_date_desc.page(params[:page]).per(10)
+    elsif params[:sort_priority]
+      @tasks = Task.all.prioritized.page(params[:page]).per(10)
+    else
+      @tasks = Task.all.order_create_at_desc.page(params[:page]).per(10)
     end
   end
 
