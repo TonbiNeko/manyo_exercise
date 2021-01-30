@@ -9,10 +9,14 @@ class TasksController < ApplicationController
       @tasks = @tasks.search_with_name(params[:name]).page(params[:page]).per(10)
     elsif params[:status].present?
       @tasks = @tasks.search_with_status(params[:status]).page(params[:page]).per(10)
+    elsif params[:priority].present?
+      @tasks = @tasks.search_with_priority(params[:priority]).page(params[:page]).per(10)
     elsif params[:sort_expired]
       @tasks = Task.all.order_expiration_date_desc.page(params[:page]).per(10)
     elsif params[:sort_priority]
-      @tasks = Task.all.prioritized.page(params[:page]).per(10)
+      @tasks = @tasks.sort_priority.page(params[:page]).per(10)
+    elsif params[:sort_date_and_status]
+      @tasks = Task.all.sort_date_and_status.page(params[:page]).per(10)
     else
       @tasks = Task.all.order_create_at_desc.page(params[:page]).per(10)
     end
@@ -56,6 +60,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:name, :description, :expiration_date, :status)
+    params.require(:task).permit(:name, :description, :expiration_date, :status, :priority)
   end
 end
