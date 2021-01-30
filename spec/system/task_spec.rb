@@ -8,10 +8,33 @@ RSpec.describe 'タスク管理機能', type: :system do
       visit new_task_path
       fill_in "task[name]", with: 'タスク１'
       fill_in "task[description]", with: '内容１'
-      fill_in "task[expiration_date]", with: '2021-01-01'
+      fill_in "task[expiration_date]", with: '2021/01/01'
       select "完了", from: "task[status]"
       click_button '登録'
       expect(page).to have_content 'タスク１'
+      end
+    end
+    context 'タスクを新規登録する時' do
+      it 'ステータスも登録ができる' do
+      visit new_task_path
+      fill_in "task[name]", with: 'タスク2'
+      fill_in "task[description]", with: '内容2'
+      fill_in "task[expiration_date]", with: '2020/02/02'
+      select "完了", from: "task[status]"
+      click_button '登録'
+      expect(page).to have_content '完了'
+      end
+    end
+
+    context 'タスクを新規登録する時' do
+      it '終了期限も登録できる' do
+      visit new_task_path
+      fill_in "task[name]", with: 'タスク3'
+      fill_in "task[description]", with: '内容3'
+      page.execute_script("document.getElementById('task_expiration_date').value = '2021-02-02'")
+      select "完了", from: "task[status]"
+      click_button '登録'
+      expect(page).to have_content '2021-02-02'
       end
     end
   end
