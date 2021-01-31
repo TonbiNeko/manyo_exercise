@@ -25,7 +25,6 @@ RSpec.describe 'タスク管理機能', type: :system do
       expect(page).to have_content '完了'
       end
     end
-
     context 'タスクを新規登録する時' do
       it '終了期限も登録できる' do
       visit new_task_path
@@ -70,6 +69,15 @@ RSpec.describe 'タスク管理機能', type: :system do
         # expect(first_task_name).to include 'Factoryで作ったデフォルトのname2'
       end
     end
+  end
+
+  describe 'ソート機能' do
+    let!(:task) { FactoryBot.create(:task) }
+    let!(:second_task) { FactoryBot.create(:second_task) }
+    let!(:third_task) {FactoryBot.create(:third_task) }
+    before do
+      visit tasks_path
+    end
     context 'タスクが終了期限でソートする場合' do
       it '終了期限の降順に並ぶ' do
         click_on "終了期限でソート"
@@ -78,13 +86,21 @@ RSpec.describe 'タスク管理機能', type: :system do
         expect(actual_task_names).to eq expected_task_names
       end
     end
-
     context 'タスクが優先順位でソートする場合' do
-      it '優先順位（未着手、着手中、完了それぞれ終了期限の昇降順）に並ぶ' do
+      it '優先順位（高→中→低）に並ぶ' do
         click_on "優先順位でソート"
         sleep(2)
         actual_task_names = all('.task_name').map(&:text)
-        expected_task_names = Task.all.prioritized.map(&:name)
+        expected_task_names = Task.all.sort_priority.map(&:name)
+        expect(actual_task_names).to eq expected_task_names
+      end
+    end
+    context 'タスクが優先順位でソートする場合' do
+      it 'ステータス（未着手→着手中→完了）で日付が早い順に並ぶ' do
+        click_on "日付とステータスでソート"
+        sleep(2)
+        actual_task_names = all('.task_name').map(&:text)
+        expected_task_names = Task.all.sort_date_and_status.map(&:name)
         expect(actual_task_names).to eq expected_task_names
       end
     end
@@ -118,7 +134,7 @@ RSpec.describe 'タスク管理機能', type: :system do
     context 'ステータス検索をした場合' do
       it "ステータスに完全一致するタスクが絞り込まれる" do
         select "完了", from: "status"
-        find('#search_status').click
+        find('#status').click
         expect(page).to have_content "task" && "完了"
       end
     end
@@ -126,7 +142,7 @@ RSpec.describe 'タスク管理機能', type: :system do
       it "検索キーワードをタイトルに含み、かつステータスに完全一致するタスク絞り込まれる" do
         fill_in "name", with: "sample"
         select "完了", from: "status"
-        find('#search_status').click
+        find('#status').click
         expect(page).to have_content "sample" && "sample2" && "完了"
       end
     end
