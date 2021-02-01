@@ -1,3 +1,38 @@
 // Place all the styles related to the tasks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+h1 {
+  font-size: 2rem;
+  font-weight: 100;
+  padding: 30px;
+}
+label {
+  padding: 0px 20px 0px 20px;
+  font-weight: bold;
+}
+.btn {
+  margin: 0px 20px 0px 20px;
+}
+.btn-light {
+  margin-top: 30px;
+}
+strong {
+  padding: 10px;
+}
+#card_show_page {
+  text-align: left;
+}
+#button_show_page {
+  text-align: center;
+}
+li {
+  list-style: none;
+}
+.index_page_link_buttons {
+  padding: 20px;
+}
+.new_task_button {
+  margin: 30px;
+}
