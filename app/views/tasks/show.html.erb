@@ -1,12 +1,30 @@
 <%= notice %>
 <h1>タスク詳細</h1>
-<p>タスク名:<%= @task.name %></p>
-<p>タスク内容：<%= @task.description %><p>
-
-<%= link_to '編集', edit_task_path(@task.id) %>
-<%= link_to '削除', task_path(@task.id), method: :delete, data: { confirm: '削除してよろしいですか？' } %>
+<div id="card_show_page" class="card w-50 mx-auto" style="width: 18rem;">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <strong>タスク名：</strong><%= @task.name %>
+    </li>
+    <li class="list-group-item">
+      <strong>タスク内容：</strong><%= @task.description %>
+    </li>
+    <li class="list-group-item">
+      <strong>終了期限：</strong><%= @task.expiration_date %>
+    </li>
+    <li class="list-group-item">
+      <strong>ステータス：</strong><%= @task.status %>
+    <li>
+    <li class="list-group-item">
+      <strong>優先度：</strong><%= @task.priority %>
+    </li>
+    <li id="button_show_page"class="list-group-item">
+      <%= link_to '編集', edit_task_path(@task.id), class: "btn btn-outline-success" %>
+      <%= link_to '削除', task_path(@task.id), method: :delete, data: { confirm: '削除してよろしいですか？' }, class: "btn btn-outline-danger" %>
+    </li>
+  </ul>
+</div>
 <br>
-<%= link_to 'タスク一覧に戻る', tasks_path %>
+<%= link_to 'タスク一覧に戻る', tasks_path, class: "btn btn-light" %>
 
 
 

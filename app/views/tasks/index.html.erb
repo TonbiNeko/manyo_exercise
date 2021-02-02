@@ -1,26 +1,76 @@
-<%= notice %>
+<div class="container-fluid">
+  <%= notice %>
+  <h1>タスク一覧</h1>
 
-<h1>タスク一覧</h1>
+  <%= form_with url: tasks_path, method: :get, local: true do |form| %>
+    <ul class="row">
+      <li class="col-md-5">
+        タスク名<%= form.text_field :name, size: 30, placeholder:"検索..." %>
+      </li>
+      <li class="col-md-2">
+        ステータス<%= form.select :status,options_for_select_from_enum(Task, :status), prompt: "選択" %>
+      </li>
+      <li class="col-md-2">
+        優先度<%= form.select :priority,options_for_select_from_enum(Task, :priority), prompt: "選択" %>
+      </li>
+      <li class="col-md-3">
+        <%= form.submit '検索', class: "btn btn-success" %>
+      </li>
+    </ul>
+  <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>タスク名</th>
-      <th>タスク詳細<th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @tasks.each do |task| %>
+  <%= link_to '新規タスクを登録', new_task_path, class: "btn btn-primary new_task_button" %>
+  
+  <ul class="row index_page_link_buttons">
+    <li class="col-md-4">
+      <%= link_to "終了期限でソート", tasks_path(sort_expired: "true"), class: "btn btn-outline-secondary" %>
+    </li>
+    <li class="col-md-4">
+      <%= link_to "優先順位でソート", tasks_path(sort_priority: "true"), class: "btn btn-outline-secondary" %>
+    </li>
+    <li class="col-md-4">
+      <%= link_to "日付とステータスでソート", tasks_path(sort_date_and_status: "true"), class: "btn btn-outline-secondary" %>
+    </li>
+  </ul>
+  
+  <p><%= @tasks.count %>件のタスクが表示されています</p>
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td class="task_name"><%= task.name %></td>
-        <td><%= task.description %></td>
-        <td><%= link_to '詳細', task_path(task.id) %></td>
-        <td><%= link_to '編集', edit_task_path(task.id) %></td>
-        <td><%= link_to '削除', task_path(task.id), method: :delete, data: { confirm: '削除してよろしいですか？' } %></td>
+        <th>タスク名</th>
+        <th>タスク詳細</th>
+        <th>終了期限</th>
+        <th>登録日時</th>
+        <th>ステータス</th>
+        <th>優先度</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-<br>
-<%= link_to '新規タスクを登録', new_task_path%>
+    </thead>
+
+    <tbody>
+      <% @tasks.each do |task| %>
+        <tr>
+          <td class="task_name"><%= task.name %></td>
+          <td><%= task.description %></td>
+          <td><%= task.expiration_date %></td>
+          <td><%= task.created_at %></td>
+          <td><%= task.status %></td>
+          <td><%= task.priority %></td>
+          <td>
+            <%= link_to '詳細', task_path(task.id), class: "btn btn-outline-primary" %>
+          </td>
+          <td>
+            <%= link_to '編集', edit_task_path(task.id), class: "btn btn-outline-success" %>
+          </td>
+          <td>
+            <%= link_to '削除', task_path(task.id), method: :delete, data: { confirm: '削除してよろしいですか？' }, class: "btn btn-outline-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= paginate @tasks %>
+</div>
+
+
+
+
