@@ -1,7 +1,17 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show]
+
+  def index
+    @user = current_user
+    @tasks = current_user.tasks.order_create_at_desc.page(params[:page]).per(10)
+  end
+
   def new
-    @user = User.new
+    if logged_in?
+      redirect_to user_path(current_user.id)
+    else
+      @user = User.new
+    end
   end
 
   def create

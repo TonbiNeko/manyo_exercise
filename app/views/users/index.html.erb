@@ -1,0 +1,37 @@
+<h1><%= @user.name %>さんのタスク</h1>
+<p><%= @user.tasks.count %>件のタスクが表示されています</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>タスク名</th>
+      <th>タスク詳細</th>
+      <th>終了期限</th>
+      <th>登録日時</th>
+      <th>ステータス</th>
+      <th>優先度</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td class="task_name"><%= task.name %></td>
+        <td><%= task.description %></td>
+        <td><%= task.expiration_date %></td>
+        <td><%= task.created_at %></td>
+        <td><%= task.status %></td>
+        <td><%= task.priority %></td>
+        <td>
+          <%= link_to '詳細', task_path(task.id), class: "btn btn-outline-primary" %>
+        </td>
+        <td>
+          <%= link_to '編集', edit_task_path(task.id), class: "btn btn-outline-success" %>
+        </td>
+        <td>
+          <%= link_to '削除', task_path(task.id), method: :delete, data: { confirm: '削除してよろしいですか？' }, class: "btn btn-outline-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= paginate @tasks %>
