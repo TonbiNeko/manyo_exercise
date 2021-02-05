@@ -34,16 +34,14 @@
 
   <div>
     <% if @user.admin? %>
-      <%= f.label :admin %>
-      <%= f.check_box :admin ,{}, "true", "false" %>
+      <p><%= f.radio_button :admin, false %>管理者権限をなくす</p>
     <% else %>
-      <%= f.label :admin %>
-      <%= f.check_box :admin ,{}, "true", "false" %>
+      <p><%= f.radio_button :admin, true %>管理者権限を与える</p>
     <% end %>
   </div>
 
   <div>
-    <%= f.submit "#{@user.name}さんのアカウント情報を更新" %>
+    <%= f.submit "#{@user.name}さんのアカウント情報を更新", class: "btn btn-secondary" %>
   </div>
 
 <% end %>
