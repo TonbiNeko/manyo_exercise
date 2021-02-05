@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include SessionsHelper
   include TasksHelper
+  include Admin::UsersHelper
 
   def authenticate_user
     if @current_user ==nil

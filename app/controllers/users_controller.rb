@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def index
     @user = current_user
-    @tasks = current_user.tasks.order_create_at_desc.page(params[:page]).per(10)
+    @tasks = @user.tasks.order_create_at_desc.page(params[:page]).per(10)
   end
 
   def new
@@ -24,6 +24,11 @@ class UsersController < ApplicationController
   end
 
   def show
+    if current_user == @user
+    @tasks = current_user.tasks.order_create_at_desc.page(params[:page]).per(10)
+    else 
+      redirect_to tasks_path
+    end
   end
 
   def edit
