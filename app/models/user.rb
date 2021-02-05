@@ -6,11 +6,20 @@ class User < ApplicationRecord
   before_validation { email.downcase! }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
-  # before_update :
-  # before_delete :
+  before_update :do_not_delete_last_admin
+  before_destroy :do_not_delete_last_admin
 
-  # private
-  #   def 
-
-  #   end
+  private
+    def do_not_delete_last_admin
+      admins = User.all.map(&:admin) 
+      a = []
+      admins.each do |admin|
+        if admin == true
+        a << admin
+        end
+      if 1 > a.size
+        throw(:abort)
+      end
+    end
+  end
 end
