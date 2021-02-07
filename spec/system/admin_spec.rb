@@ -1,11 +1,3 @@
-# 管理ユーザは管理画面にアクセスできること
-# 一般ユーザは管理画面にアクセスできないこと
-# 管理ユーザはユーザの新規登録ができること
-# 管理ユーザはユーザの詳細画面にアクセスできること
-
-# 管理ユーザはユーザの編集画面からユーザを編集できること
-# 管理ユーザはユーザの削除をできること
-
 require 'rails_helper'
 
 RSpec.describe '管理ユーザー', type: :system do
@@ -41,8 +33,6 @@ RSpec.describe '管理ユーザー', type: :system do
         expect(page).to have_content 'factorybotさん詳細ページ'
       end
     end
-
-
     context '管理ユーザがユーザの編集画面からユーザを編集した場合' do
       it '一般ユーザの情報が編集される' do
         click_on '編集',match: :first
@@ -64,9 +54,6 @@ RSpec.describe '管理ユーザー', type: :system do
       end
     end
   end
-
-
-
   describe '一般ユーザー' do
     context '一般ユーザが管理画面にアクセスにした場合' do
       let!(:user) { FactoryBot.create(:user) }
