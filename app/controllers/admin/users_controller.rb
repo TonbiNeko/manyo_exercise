@@ -7,10 +7,19 @@ class Admin::UsersController < ApplicationController
   end
 
   def new
-  @user = User.new
+    @user = User.new
   end
 
   def edit
+  end
+
+  def update
+    if @user.update(user_params)
+      redirect_to admin_users_path, notice: "アカウント情報を編集しました"
+      binding.pry
+    else
+      render :edit
+    end
   end
 
   def show
@@ -18,13 +27,16 @@ class Admin::UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
-    redirect_to admin_user_path, notice: "アカウントを削除しました"
+    if @user.destroy
+      redirect_to admin_users_path, notice: "アカウントを削除しました"
+    else
+      redirect_to admin_user_path(@user.id),notice: "管理者は最小１人必要です"
+    end
   end
 
 private
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :admin)
+    params.require(:user).permit( :name, :email, :password, :password_confirmation, :admin)
   end
 
   def set_user

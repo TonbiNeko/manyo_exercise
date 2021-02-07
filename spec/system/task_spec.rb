@@ -39,33 +39,33 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
 
   describe '一覧表示機能' do
-    let!(:task) { FactoryBot.create(:task) }
-    let!(:second_task) { FactoryBot.create(:second_task) }
-    let!(:third_task) {FactoryBot.create(:third_task) }
     before do
+      test = FactoryBot.create(:user, name: "test",email: "test@example.com", password: "umeboshi", password_confirmation: "umeboshi")
+      FactoryBot.create(:task, name: "first_task", user: test)
+      FactoryBot.create(:second_task, name: "second_task", user: test)
+      FactoryBot.create(:third_task, name: "third_task", user: test)
+      visit tasks_path
+      fill_in "session[email]", with: "test@example.com"
+      fill_in "session[password]", with: "umeboshi"
+      click_on "Log in"
       visit tasks_path
     end
     context '一覧画面に遷移した場合' do
       it '作成済みのタスク一覧が表示される' do
-        expect(page).to have_content 'Factoryで作ったデフォルトのname1'
+        expect(page).to have_content 'first_task'
       end
     end
     context 'タスクが作成日時の降順に並んでいる場合' do
       it '新しいタスクが一番上に表示される' do
         # task_list = all('.task_name')
         # first_task_name = task_list.first.text
-
         actual_task_names = all('.task_name').map(&:text)
-
         # expected_task_names = [
         #   'Factoryで作ったデフォルトのname2',
         #   'Factoryで作ったデフォルトのname1'
         # ]
-
         expected_task_names = Task.all.order(created_at: :desc).pluck(:name)
-
         expect(actual_task_names).to eq expected_task_names
-
         # expect(first_task_name).to include 'Factoryで作ったデフォルトのname2'
       end
     end
@@ -77,10 +77,15 @@ RSpec.describe 'タスク管理機能', type: :system do
     let!(:third_task) {FactoryBot.create(:third_task) }
     before do
       visit tasks_path
+      fill_in "session[email]", with: "factorybot@example.com"
+      fill_in "session[password]", with: "factorybot"
+      click_on "Log in"
+      visit tasks_path
     end
     context 'タスクが終了期限でソートする場合' do
       it '終了期限の降順に並ぶ' do
         click_on "終了期限でソート"
+        sleep(5)
         actual_task_names = all('.task_name').map(&:text)
         expected_task_names = Task.all.order(expiration_date: :desc).pluck(:name)
         expect(actual_task_names).to eq expected_task_names
@@ -89,7 +94,7 @@ RSpec.describe 'タスク管理機能', type: :system do
     context 'タスクが優先順位でソートする場合' do
       it '優先順位（高→中→低）に並ぶ' do
         click_on "優先順位でソート"
-        sleep(2)
+        sleep(5)
         actual_task_names = all('.task_name').map(&:text)
         expected_task_names = Task.all.sort_priority.map(&:name)
         expect(actual_task_names).to eq expected_task_names
@@ -98,7 +103,7 @@ RSpec.describe 'タスク管理機能', type: :system do
     context 'タスクが優先順位でソートする場合' do
       it 'ステータス（未着手→着手中→完了）で日付が早い順に並ぶ' do
         click_on "日付とステータスでソート"
-        sleep(2)
+        sleep(5)
         actual_task_names = all('.task_name').map(&:text)
         expected_task_names = Task.all.sort_date_and_status.map(&:name)
         expect(actual_task_names).to eq expected_task_names
@@ -108,9 +113,15 @@ RSpec.describe 'タスク管理機能', type: :system do
 
   describe '詳細表示機能' do
      context '任意のタスク詳細画面に遷移した場合' do
-       it '該当タスクの内容が表示される' do
-        task = FactoryBot.create(:second_task)
+      let!(:second_task) { FactoryBot.create(:second_task) }
+      before do
         visit tasks_path
+        fill_in "session[email]", with: "factorybot1@example.com"
+        fill_in "session[password]", with: "factorybot"
+        click_on "Log in"
+        visit tasks_path
+      end
+       it '該当タスクの内容が表示される' do
         click_on '詳細'
         expect(page).to have_content 'Factoryで作ったデフォルトのdescriotion2'
        end
@@ -122,6 +133,10 @@ RSpec.describe 'タスク管理機能', type: :system do
     let!(:second_task) { FactoryBot.create(:second_task, name: "sample", status: "完了") }
     let!(:third_task) { FactoryBot.create(:third_task, name: "sample2", status: "完了") }
     before do
+      visit tasks_path
+      fill_in "session[email]", with: "factorybot@example.com"
+      fill_in "session[password]", with: "factorybot"
+      click_on "Log in"
       visit tasks_path
     end
     context 'タイトルであいまい検索をした場合' do
