@@ -1,0 +1,47 @@
+<h1>admin Edit</h1>
+
+<% if @user.errors.any? %>
+  <div>
+    <h2><%= pluralize(@user.errors.count, "個のエラー") %>があります</h2>
+    <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with scope: :user, url: admin_user_path(@user),method: :patch, local: true do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :email %>
+    <%= f.email_field :email %>
+  </div>
+
+  <div>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </div>
+
+  <div>
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+  </div>
+
+  <div>
+    <% if @user.admin? %>
+      <p><%= f.radio_button :admin, false %>管理者権限をなくす</p>
+    <% else %>
+      <p><%= f.radio_button :admin, true %>管理者権限を与える</p>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.submit "#{@user.name}さんのアカウント情報を更新", class: "btn btn-secondary" %>
+  </div>
+
+<% end %>
