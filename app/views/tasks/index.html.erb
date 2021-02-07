@@ -2,23 +2,28 @@
   <h1>タスク一覧</h1>
 
   <%= form_with url: tasks_path, method: :get, local: true do |form| %>
-    <ul class="row">
-      <li class="col-md-5">
-        タスク名<%= form.text_field :name, size: 30, placeholder:"検索..." %>
-      </li>
-      <li class="col-md-2">
-        ステータス<%= form.select :status,options_for_select_from_enum(Task, :status), prompt: "選択" %>
-      </li>
-      <li class="col-md-2">
-        優先度<%= form.select :priority,options_for_select_from_enum(Task, :priority), prompt: "選択" %>
-      </li>
-      <li class="col-md-3">
-        <%= form.submit '検索', class: "btn btn-success" %>
-      </li>
-    </ul>
+    <div class="search_list">
+      <ul class="row">
+        <li class="col-md-4">
+          ステータス<%= form.select :status,options_for_select_from_enum(Task, :status), prompt: "選択" %>
+        </li>
+        <li class="col-md-4">
+          優先度<%= form.select :priority,options_for_select_from_enum(Task, :priority), prompt: "選択" %>
+        </li>
+        <li class="col-md-4">
+          ラベル<%= form.select("label_id", Label.pluck(:name, :id), { prompt: "選択" }) %>
+        </li>
+        <li class="col-md-12">
+          タスク名<%= form.text_field :name, size: 70, placeholder:"検索..." %>
+        </li>
+        <li class="col-md-12" "task_index_search_button">
+          <%= form.submit '検索', class: "btn btn-success" %>
+        </li>
+      </ul>
+    </div>
   <% end %>
 
-  <%= link_to '新規タスクを登録', new_task_path, class: "btn btn-primary new_task_button" %>
+  <%= link_to '新規タスクを登録', new_task_path, class: "btn btn-secondary new_task_button" %>
   
   <ul class="row index_page_link_buttons">
     <li class="col-md-4">
@@ -42,6 +47,7 @@
         <th>登録日時</th>
         <th>ステータス</th>
         <th>優先度</th>
+        <th>ラベル</th>
       </tr>
     </thead>
 
@@ -54,6 +60,11 @@
           <td><%= task.created_at %></td>
           <td><%= task.status %></td>
           <td><%= task.priority %></td>
+          <td>
+            <% task.labels.each do |label| %>
+              <%= label.name %>
+            <% end %>
+          </td>
           <td>
             <%= link_to '詳細', task_path(task.id), class: "btn btn-outline-primary" %>
           </td>

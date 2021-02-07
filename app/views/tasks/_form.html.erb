@@ -31,6 +31,9 @@
         <%= form.select :priority,options_for_select_from_enum(Task, :priority), prompt: "選択" %>
       </li>
       <li class="list-group-item">
+        <%= form.collection_check_boxes(:label_ids, Label.all, :id, :name) %>
+      </li>
+      <li class="list-group-item">
         <%= form.submit "登録", class: "btn btn-primary" %>
       </li>
     </ul>

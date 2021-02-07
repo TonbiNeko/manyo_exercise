@@ -13,7 +13,7 @@ label {
   font-weight: bold;
 }
 .btn {
-  margin: 0px 20px 0px 20px;
+  margin: 20px 20px 0px 20px;
 }
 .btn-light {
   margin-top: 30px;
@@ -35,4 +35,13 @@ li {
 }
 .new_task_button {
   margin: 30px;
+}
+.search_list {
+  background-color: rgb(143, 188, 180);
+  padding: 20px;
+}
+.task_index_search_button {
+  padding: 10px;
+  margin: 10px;
+  background-color: rosybrown;
 }
