@@ -47,7 +47,6 @@
         <th>登録日時</th>
         <th>ステータス</th>
         <th>優先度</th>
-        <th>ラベル</th>
       </tr>
     </thead>
 
@@ -60,11 +59,9 @@
           <td><%= task.created_at %></td>
           <td><%= task.status %></td>
           <td><%= task.priority %></td>
-          <td>
-            <% task.labels.each do |label| %>
-              <%= label.name %>
-            <% end %>
-          </td>
+            <%# task.labels.each do |label| %>
+              <%#= label.name %>
+            <%# end %>
           <td>
             <%= link_to '詳細', task_path(task.id), class: "btn btn-outline-primary" %>
           </td>
