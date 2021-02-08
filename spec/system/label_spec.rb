@@ -40,17 +40,15 @@ RSpec.describe 'ラベル機能', type: :system do
 
     context 'ユーザーがタスクを新規登録した場合' do
       it 'ラベルも一緒に登録できる' do
-        
+
         visit new_task_path
         fill_in "task[name]", with: 'タスク１'
         fill_in "task[description]", with: '内容１'
         fill_in "task[expiration_date]", with: '2021/01/01'
         select "完了", from: "task[status]"
         select "高", from: "task[priority]"
-        check "Factory_label1"
+        check 'task[label_ids][]', match: :first
         click_button '登録'
-        visit tasks_path
-        all('td')[6].click_link
         expect(page).to have_content "Factory_label1"
       end
     end
@@ -60,11 +58,11 @@ RSpec.describe 'ラベル機能', type: :system do
       it 'ラベルも編集できる' do
         visit tasks_path
         all('td')[16].click_link
-        sleep(3)
-        check "Factory_label2"
+        check 'task[label_ids][]', match: :first
         click_button '登録'
         all('td')[15].click_link
-        expect(page).to have_content "Factory_label2"
+        sleep(3)
+        expect(page).to have_content "Factory_label1"
       end
     end
 

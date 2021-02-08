@@ -14,7 +14,7 @@ FactoryBot.define do
     #   end
     trait :task_with_groups do
       after(:create) do |task|
-        label = FactoryBot.create(:label)
+        #label = FactoryBot.create(:label)
         task.task_labels << FactoryBot.create(:task_label)
         task.save
       end
