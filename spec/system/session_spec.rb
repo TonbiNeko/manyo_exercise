@@ -7,10 +7,10 @@ RSpec.describe 'セッション機能', type: :system do
     context 'ユーザーがログインした場合' do
       it 'ユーサーの詳細ページにいく' do
         visit new_session_path
-        fill_in 'session[email]', with: 'factorybot@example.com'
+        fill_in 'session[email]', with: 'factorybot1@example.com'
         fill_in 'session[password]', with: 'factorybot'
         click_on 'Log in'
-        expect(page).to have_content 'factorybot@example.com'
+        expect(page).to have_content 'factorybot1@example.com'
       end
     end
   end
@@ -20,7 +20,7 @@ RSpec.describe 'セッション機能', type: :system do
       let!(:second_user) { FactoryBot.create(:second_user, id: 1) }
       before do
         visit new_session_path
-        fill_in 'session[email]', with: 'factorybot@example.com'
+        fill_in 'session[email]', with: 'factorybot1@example.com'
         fill_in 'session[password]', with: 'factorybot'
         click_on 'Log in'
         visit user_path(1)
@@ -35,7 +35,7 @@ RSpec.describe 'セッション機能', type: :system do
       let!(:user) { FactoryBot.create(:user) }
       before do
         visit new_session_path
-        fill_in 'session[email]', with: 'factorybot@example.com'
+        fill_in 'session[email]', with: 'factorybot1@example.com'
         fill_in 'session[password]', with: 'factorybot'
         click_on 'Log in'
         click_link 'Log out'

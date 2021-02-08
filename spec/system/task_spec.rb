@@ -77,7 +77,7 @@ RSpec.describe 'タスク管理機能', type: :system do
     let!(:third_task) {FactoryBot.create(:third_task) }
     before do
       visit tasks_path
-      fill_in "session[email]", with: "factorybot@example.com"
+      fill_in "session[email]", with: "factorybot1@example.com"
       fill_in "session[password]", with: "factorybot"
       click_on "Log in"
       visit tasks_path
@@ -94,7 +94,7 @@ RSpec.describe 'タスク管理機能', type: :system do
     context 'タスクが優先順位でソートする場合' do
       it '優先順位（高→中→低）に並ぶ' do
         click_on "優先順位でソート"
-        sleep(5)
+        sleep(8)
         actual_task_names = all('.task_name').map(&:text)
         expected_task_names = Task.all.sort_priority.map(&:name)
         expect(actual_task_names).to eq expected_task_names
@@ -103,7 +103,7 @@ RSpec.describe 'タスク管理機能', type: :system do
     context 'タスクが優先順位でソートする場合' do
       it 'ステータス（未着手→着手中→完了）で日付が早い順に並ぶ' do
         click_on "日付とステータスでソート"
-        sleep(5)
+        sleep(8)
         actual_task_names = all('.task_name').map(&:text)
         expected_task_names = Task.all.sort_date_and_status.map(&:name)
         expect(actual_task_names).to eq expected_task_names
@@ -116,7 +116,7 @@ RSpec.describe 'タスク管理機能', type: :system do
       let!(:second_task) { FactoryBot.create(:second_task) }
       before do
         visit tasks_path
-        fill_in "session[email]", with: "factorybot1@example.com"
+        fill_in "session[email]", with: "factorybot2@example.com"
         fill_in "session[password]", with: "factorybot"
         click_on "Log in"
         visit tasks_path
@@ -134,7 +134,7 @@ RSpec.describe 'タスク管理機能', type: :system do
     let!(:third_task) { FactoryBot.create(:third_task, name: "sample2", status: "完了") }
     before do
       visit tasks_path
-      fill_in "session[email]", with: "factorybot@example.com"
+      fill_in "session[email]", with: "factorybot1@example.com"
       fill_in "session[password]", with: "factorybot"
       click_on "Log in"
       visit tasks_path
