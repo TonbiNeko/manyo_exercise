@@ -24,13 +24,14 @@ RSpec.describe '管理ユーザー', type: :system do
         fill_in 'user[password]', with: 'password'
         fill_in 'user[password_confirmation]', with: 'password'
         click_on 'ユーザーの作成'
-        expect(page).to have_content 'user_testのページ'
+        created_user = User.where(email: 'user_test@example.com').count
+        expect(created_user).to eq 1 
       end
     end
     context '管理ユーザが一般ユーザの詳細画面にアクセスした場合' do
       it '一般ユーザの詳細画面に遷移される' do
         click_on '詳細',match: :first
-        expect(page).to have_content 'factorybotさん詳細ページ'
+        expect(page).to have_content 'factorybot1さん詳細ページ'
       end
     end
     context '管理ユーザがユーザの編集画面からユーザを編集した場合' do
@@ -41,7 +42,7 @@ RSpec.describe '管理ユーザー', type: :system do
         fill_in 'user[password]', with: 'password'
         fill_in 'user[password_confirmation]', with: 'password'
         sleep(3)
-        click_on 'factorybotさんのアカウント情報を更新'
+        click_on 'factorybot1さんのアカウント情報を更新'
         expect(page).to have_content 'editedさん詳細ページ' && 'edited@example.com'
       end
     end
@@ -50,7 +51,7 @@ RSpec.describe '管理ユーザー', type: :system do
         click_on '削除',match: :first
         page.driver.browser.switch_to.alert.accept
         sleep(3)
-        expect(page).not_to have_content 'factorybot'
+        expect(page).not_to have_content 'factorybot1'
       end
     end
   end
